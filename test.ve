@@ -1,0 +1,6 @@
+include "tests/axioms.ve"
+include "tests/e1_2_1.ve"
+include "tests/handin1.ve"
+include "tests/e1_2_2.ve"
+include "tests/e1_2_3.ve"
+include "tests/e1_2_5.ve"

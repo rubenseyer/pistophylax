@@ -1,0 +1,69 @@
+prove e1_2_5a. |- ((P > Q) > Q) > ((Q > P) > P)
+    assume
+        (P > Q) > Q : as
+        assume
+            Q > P : as
+            assume
+                ~P : as
+                assume
+                    P : as
+                    # : ~e 3 ..
+                    Q : #e ..
+                end
+                P > Q : >i [..]
+                Q : >e 1 ..
+                P : >e 2 ..
+                # : ~e 3 ..
+            end
+            P : PBC [..]
+        end
+        (Q > P) > P : >i [..]
+    end
+    ((P > Q) > Q) > ((Q > P) > P) : >i [..]
+qed
+
+prove e1_2_5b. |- ((Q > P) > P) > ((P > Q) > Q)
+    ((Q > P) > P) > ((P > Q) > Q) : e1_2_5a
+qed
+
+prove e1_2_5c. |- (P > Q) ^ (Q > P) > (P v Q > P ^ Q)
+    assume
+        (P > Q) ^ (Q > P) : as
+            assume
+                P v Q : as
+                assume
+                    P @t : as
+                    P > Q : ^e1 1
+                    Q : >e .. ...
+                    P ^ Q : ^i @t ..
+                end
+                assume
+                    Q @t : as
+                    Q > P : ^e2 1
+                    P : >e .. ...
+                    P ^ Q : ^i .. @t
+                end
+                P ^ Q : ve 2 [...] [..]
+            end
+        (P v Q > P ^ Q) : >i [..]
+    end
+    (P > Q) ^ (Q > P) > (P v Q > P ^ Q) : >i [..]
+qed
+
+prove e1_2_5d. |- (P > Q) > (~P > Q) > Q
+    assume
+        P > Q : as
+        assume
+            ~P > Q : as
+            assume
+                ~Q : as
+                ~P : MT 1 ..
+                ~~P : MT 2 ...
+                # : ~e .. ...
+            end
+            Q : PBC [..]
+        end
+        (~P > Q) > Q : >i [..]
+    end
+    (P > Q) > (~P > Q) > Q : >i [..]
+qed

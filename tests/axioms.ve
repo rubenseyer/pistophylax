@@ -1,0 +1,66 @@
+axiom ∧i.  P, Q  ⊢ P ∧ Q
+axiom ∧e1. P ∧ Q ⊢ P
+axiom ∧e2. P ∧ Q ⊢ Q
+
+axiom →i.  [P Q] ⊢ P → Q
+axiom →e.  P → Q, P ⊢ Q
+
+axiom ∨i1. P ⊢ P ∨ Q
+axiom ∨i2. Q ⊢ P ∨ Q
+axiom ∨e.  P ∨ Q, [P R], [Q R] ⊢ R
+
+axiom ⊥e. ⊥ ⊢ P
+
+// classical!
+axiom PBC. [¬P ⊥] ⊢ P
+
+// DERIVED
+// for simplicity, we state ¬ rules as
+// axioms so proofs don't take boxes
+// (they restate implication axioms)
+axiom ¬i. [P ⊥] ⊢ ¬P
+axiom ¬e. ¬P, P ⊢ ⊥
+
+prove MT. P → Q, ¬Q ⊢ ¬P
+  P → Q : premise
+  ¬Q : premise
+  assume
+    P : assumption
+    Q : →e 1 3
+    ⊥ : ¬e 2 4
+  end
+  ¬P : ¬i [3]
+qed
+
+prove DNi. P ⊢ ¬¬P  // ¬¬i
+  P : premise
+  assume
+    ¬P : assumption
+    ⊥ : ¬e 2 1
+  end
+  ¬¬P : ¬i [2]
+qed
+prove DNe. ¬¬P ⊢ P  // ¬¬e
+  ¬¬P : premise
+  assume
+    ¬P : assumption
+    ⊥ : ¬e 1 2
+  end
+  P : PBC [2]
+qed
+
+prove LEM. ⊢ P ∨ ¬P
+  assume
+    ¬(P ∨ ¬P) : assumption
+    assume
+      P : assumption
+      P ∨ ¬P : ∨i1 2
+      ⊥ : ¬e 1 3
+    end
+    ¬P : ¬i [2]
+    P ∨ ¬P : ∨i2 5
+    ⊥ : ¬e 1 6
+  end
+  P ∨ ¬P : PBC [1]
+qed
+

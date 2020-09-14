@@ -1,0 +1,101 @@
+prove p2_1. (P ^ Q) v (P ^ R) |- P ^ (Q v R)
+    (P ^ Q) v (P ^ R) : pr
+    assume
+        P ^ Q : as
+        Q : ^e2 ..
+        P : ^e1 ...
+        Q v R : vi1 ...
+        P ^ (Q v R) : ^i ... ..
+    end
+    assume
+        P ^ R : as
+        R : ^e2 ..
+        P : ^e1 ...
+        Q v R : vi2 ...
+        P ^ (Q v R) : ^i ... ..
+    end
+    P ^ (Q v R) : ve 1 [...] [..]
+qed
+
+prove p2_2. P v Q |- (P > Q) > Q
+    P v Q : pr
+    assume
+        P > Q : as
+        assume
+            P : as
+            Q : >e ... ..
+        end
+        assume
+            Q : as
+        end
+        Q : ve 1 [...] [..]
+    end
+    (P > Q) > Q : >i [..]
+qed
+
+prove p2_3. P > ~P, ~P > P |- #
+    P > ~P : pr
+    ~P > P : pr
+    assume
+        P : as
+        ~P : >e 1 ..
+        # : ~e .. ...
+    end
+    ~P : ~i [..]
+    P : >e 2 ..
+    # : ~e ... ..
+qed
+
+prove p2_4. ~(P ^ Q) |- ~P v ~Q
+    ~(P ^ Q) : pr
+    P v ~P : LEM
+    assume
+        P : as
+        assume
+            Q : as
+            P ^ Q : ^i ... ..
+            # : ~e 1 ..
+        end
+        ~Q : ~i [..]
+        ~P v ~Q : vi2 ..
+    end
+    assume
+        ~P : as
+        ~P v ~Q : vi1 ..
+    end
+    ~P v ~Q : ve 2 [...] [..]
+qed
+
+prove p3_1. |- ((P > Q) > P) > P
+    assume
+        (P > Q) > P : as
+        assume
+            ~P : as
+            assume
+                P : as
+                # : ~e ... ..
+                Q : #e ..
+            end
+            P > Q : >i [..]
+            P : >e 1 ..
+            # : ~e 2 ..
+        end
+        P : PBC [..]
+    end
+    ((P > Q) > P) > P : >i [..]
+qed
+
+prove p3_2. (~P > P) > P |- ~~P > P
+    (~P > P) > P : pr
+    assume
+        ~~P : as
+        assume
+            ~P : as
+            # : ~e ... ..
+            P : #e ..
+        end
+        ~P > P : >i [..]
+        P : >e 1 ..
+    end
+    ~~P > P : >i [..]
+qed

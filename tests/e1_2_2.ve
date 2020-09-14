@@ -1,0 +1,128 @@
+prove e1_2_2a. ~P > ~Q |- Q > P
+    ~P > ~Q : pr
+    assume
+        Q : as
+        assume
+            ~P : as
+            ~Q : >e 1 ..
+            # : ~e .. 2
+        end
+        ~~P : ~i [..]
+        P : DNe ..
+    end
+    Q > P : >i [..]
+qed
+
+prove e1_2_2b. ~P v ~Q |- ~(P ^ Q)
+    ~P v ~Q : pr
+    assume
+        P ^ Q : as
+        assume
+            ~P : as
+            P : ^e1 2
+            # : ~e ... ..
+        end
+        assume
+            ~Q : as
+            Q : ^e2 2
+            # : ~e ... ..
+        end
+        # : ve 1 [...] [..]
+    end
+    ~(P ^ Q) : ~i [..]
+qed
+
+prove e1_2_2c. ~P, P v Q |- Q
+    ~P : pr
+    P v Q : pr
+    assume
+        P : as
+        # : ~e 1 ..
+        Q : #e ..
+    end
+    assume
+        Q : as
+    end
+    Q : ve 2 [...] [..]
+qed
+
+prove e1_2_2d. P v Q, ~Q v R |- P v R
+    P v Q : pr
+    ~Q v R : pr
+    assume
+        P : as
+        P v R : vi1 ..
+    end
+    assume
+        Q : as
+        assume
+            ~Q : as
+            # : ~e .. ...
+            R : #e ..
+            P v R : vi2 ..
+        end
+        assume
+            R : as
+            P v R : vi2 ..
+        end
+        P v R : ve 2 [...] [..]
+    end
+    P v R : ve 1 [...] [..]
+qed
+
+prove e1_2_2e. P > Q v R, ~Q, ~R |- ~P
+    P > Q v R : pr
+    ~Q : pr
+    ~R : pr
+    assume
+        P : as
+        Q v R : >e 1 ..
+        assume
+            Q : as
+            # : ~e 2 ..
+        end
+        assume
+            R : as
+            # : ~e 3 ..
+        end
+        # : ve 5 [...] [..]
+    end
+    ~P : ~i [..]
+qed
+
+prove e1_2_2f. ~P ^ ~Q |- ~(P v Q)
+    ~P ^ ~Q : pr
+    assume
+        P v Q : as
+        assume
+            P : as
+            ~P : ^e1 1
+            # : ~e .. ...
+        end
+        assume
+            Q : as
+            ~Q : ^e2 1
+            # : ~e .. ...
+        end
+        # : ve 2 [...] [..]
+    end
+    ~(P v Q) : ~i [..]
+qed
+
+prove e1_2_2g. P ^ ~P ⊢ ~(R > Q) ^ (R > Q)
+    P ^ ~P : pr
+    P : ^e1 ..
+    ~P : ^e2 ...
+    # : ~e .. ...
+    ~(R > Q) ^ (R > Q) : #e ..
+qed
+
+prove e1_2_2i. ~(~P v Q) |- P
+    ~(~P v Q) : pr
+    assume
+        ~P : as
+        ~P v Q : vi1 ..
+        # : ~e 1 ..
+    end
+    P : PBC [..]
+qed

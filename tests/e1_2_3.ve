@@ -1,0 +1,442 @@
+prove e1_2_3a. ~P > P |- P
+    ~P > P : pr
+    assume
+        ~P : as
+        P : >e ... ..
+        # : ~e ... ..
+    end
+    P : PBC [..]
+qed
+
+prove e1_2_3b. ~P |- P > Q
+    ~P : pr
+    assume
+        P : as
+        # : ~e ... ..
+        Q : #e ..
+    end
+    P > Q : >i [..]
+qed
+
+prove e1_2_3c. P v Q, ~Q |- P
+    P v Q : pr
+    ~Q : pr
+    assume
+        P : as
+    end
+    assume
+        Q : as
+        # : ~e 2 ..
+        P : #e ..
+    end
+    P : ve 1 [...] [..]
+qed
+
+prove e1_2_3d. |- ~P > P > P > Q
+    assume
+        ~P : as
+        assume
+            P : as
+            assume
+                P : as
+                # : ~e 1 ..
+                Q : #e ..
+            end
+            P > Q : >i [..]
+        end
+        P > P > Q : >i [..]
+    end
+    ~P > P > P > Q : >i [..]
+qed
+
+prove e1_2_3e. ~(P > Q) |- Q > P
+    ~(P > Q) : pr
+    assume
+        Q : as
+        assume
+            P : as
+            Q : copy ...
+        end
+        P > Q : >i [..]
+        # : ~e 1 ..
+        P : #e ..
+    end
+    Q > P : >i [..]
+qed
+
+prove e1_2_3f. P > Q |- ~P v Q
+    P > Q : pr
+    P v ~P : LEM
+    assume
+        P : as
+        Q : >e 1 ..
+        ~P v Q : vi2 ..
+    end
+    assume
+        ~P : as
+        ~P v Q : vi1 ..
+    end
+    ~P v Q : ve 2 [...] [..]
+qed
+
+prove e1_2_3g. |- (~P v Q) > (P > Q)
+    assume
+        ~P v Q : as
+        assume
+            P : as
+            assume
+                ~P : as
+                # : ~e .. 2
+                Q : #e ..
+            end
+            assume
+                Q : as
+            end
+            Q : ve 1 [...] [..]
+        end
+        P > Q : >i [..]
+    end
+    (~P v Q) > (P > Q) : >i [..]
+qed
+
+prove e1_2_3h. P > Q v R, ~Q, ~R |- ~P
+    P > Q v R : pr
+    ~Q : pr
+    ~R : pr
+    assume
+        P : as
+        Q v R : >e 1 ..
+        assume
+            Q : as
+            # : ~e 2 ..
+        end
+        assume
+            R : as
+            # : ~e 3 ..
+        end
+        # : ve 5 [...] [..]
+    end
+    ~P : ~i [..]
+qed
+
+prove e1_2_3i. (C∧N)→T, H∧¬S, H∧¬(S∨C)→P |- (N∧¬T)→P
+    (C∧N)→T : pr
+    H∧¬S : pr
+    H∧¬(S∨C)→P : pr
+    assume
+        N ^ ~T : as
+        assume
+            S v C : as
+            assume
+                S : as
+                ~S : ^e2 2
+                # : ~e .. ...
+            end
+            assume
+                C : as
+                N : ^e1 4
+                C ^ N : ^i ... ..
+                T : >e 1 ..
+                ~T : ^e2 4
+                # : ~e .. ...
+            end
+            # : ve 5 [...] [..]
+        end
+        ~(S v C) : ~i [..]
+        H : ^e1 2
+        H ^ ~(S v C) : ^i .. ...
+        P : >e 3 ..
+    end
+    (N∧¬T)→P : >i [..]
+qed
+
+prove e1_2_3j1. ¬(R ∨ S → Q) ∧ (R ∨ S → Q) |- (P → Q) ∧ ¬(P → Q)
+    ¬(R ∨ S → Q) ∧ (R ∨ S → Q) : pr
+    ¬(R ∨ S → Q) : ^e1 ..
+    (R ∨ S → Q) : ^e2 ...
+    # : ~e ... ..
+    (P → Q) ∧ ¬(P → Q) : #e ..
+qed
+prove e1_2_3j2. (P → Q) ∧ ¬(P → Q) |- ¬(R ∨ S → Q) ∧ (R ∨ S → Q)
+    (P → Q) ∧ ¬(P → Q) : pr
+    (P → Q) : ^e1 ..
+    ¬(P → Q) : ^e2 ...
+    # : ~e .. ...
+    ¬(R ∨ S → Q) ∧ (R ∨ S → Q) : #e ..
+qed
+
+prove e1_2_3k. Q |- (P ^ Q) v (~P ^ Q)
+    Q : pr
+    P v ~P : LEM
+    assume
+        P : as
+        P ^ Q : ^i .. 1
+        (P ^ Q) v (~P ^ Q) : vi1 ..
+    end
+    assume
+        ~P : as
+        ~P ^ Q : ^i .. 1
+        (P ^ Q) v (~P ^ Q) : vi2 ..
+    end
+    (P ^ Q) v (~P ^ Q) : ve 2  [...] [..]
+qed
+
+prove e1_2_3l. ~(P ^ Q) |- ~P v ~Q
+    ~(P ^ Q) : pr
+    P v ~P : LEM
+    assume
+        P : as
+        assume
+            Q : as
+            P ^ Q : ^i ... ..
+            # : ~e 1 ..
+        end
+        ~Q : ~i [..]
+        ~P v ~Q : vi2 ..
+    end
+    assume
+        ~P : as
+        ~P v ~Q : vi1 ..
+    end
+    ~P v ~Q : ve 2 [...] [..]
+qed
+
+prove e1_2_3m. P ^ Q > R |- (P > R) v (Q > R)
+    P ^ Q > R : pr
+    P v ~P : LEM
+    assume
+        P : as
+        assume
+            Q : as
+            P ^ Q : ^i ... ..
+            R : >e 1 ..
+        end
+        Q > R : >i [..]
+        (P > R) v (Q > R) : vi2 ..
+    end
+    assume
+        ~P : as
+        assume
+            P : as
+            # : ~e ... ..
+            R : #e ..
+        end
+        P > R : >i [..]
+        (P > R) v (Q > R) : vi1 ..
+    end
+    (P > R) v (Q > R) : ve 2 [...] [..]
+qed
+
+prove e1_2_3n. P ^ Q |- ~(~P v ~Q)
+    P ^ Q : pr
+    assume
+        ~P v ~Q : as
+        assume
+            ~P : as
+            P : ^e1 1
+            # : ~e ... ..
+        end
+        assume
+            ~Q : as
+            Q : ^e2 1
+            # : ~e ... ..
+        end
+        # : ve 2 [...] [..]
+    end
+    ~(~P v ~Q) : ~i [..]
+qed
+
+prove e1_2_3o. ~(~P v ~Q) |- P ^ Q
+    ~(~P v ~Q) : pr
+    assume
+        ~P : as
+        ~P v ~Q : vi1 ..
+        # : ~e 1 ..
+    end
+    P @P : PBC [..]
+    assume
+        ~Q : as
+        ~P v ~Q : vi2 ..
+        # : ~e 1 ..
+    end
+    Q : PBC [..]
+    P ^ Q : ^i @P ..
+qed
+
+prove e1_2_3p. P > Q |- ~P v Q  // without LEM
+    P > Q : pr
+    assume
+        ~(~P v Q) : as
+        assume
+            P : as
+            Q : >e 1 ..
+            ~P v Q : vi2 ..
+            # : ~e 2 ..
+        end
+        ~P : ~i [..]
+        ~P v Q : vi1 ..
+        # : ~e 2 ..
+    end
+    ~P v Q : PBC [..]
+qed
+
+prove e1_2_3q. |- (P > Q) v (Q > R)
+    Q v ~Q : LEM
+    assume
+        Q : as
+        assume
+            P : as
+            Q : copy ...
+        end
+        P > Q : >i [..]
+        (P > Q) v (Q > R) : vi1 ..
+    end
+    assume
+        ~Q : as
+        assume
+            Q : as
+            # : ~e ... ..
+            R : #e ..
+        end
+        Q > R : >i [..]
+        (P > Q) v (Q > R) : vi2 ..
+    end
+    (P > Q) v (Q > R) : ve 1 [...] [..]
+qed
+
+prove e1_2_3r. P > Q, ~P > R, ~Q > ~R |- Q
+    P > Q : pr
+    ~P > R : pr
+    ~Q > ~R : pr
+    assume
+        ~Q : as
+        ~R : >e 3 ..
+        ~~P : MT 2 ..
+        P : DNe ..
+        Q : >e 1 ..
+        # : ~e 4 ..
+    end
+    Q : PBC [..]
+qed
+prove e1_2_3r2. P > Q, ~P > R, ~Q > ~R |- Q
+    P > Q : pr
+    ~P > R : pr
+    ~Q > ~R : pr
+    assume
+        ~Q : as
+        ~R : >e 3 ..
+        assume
+            P : as
+            Q : >e 1 ..
+            # : ~e 4 ..
+        end
+        ~P : ~i [..]
+        R : >e 2 ..
+        # : ~e 5 ..
+    end
+    Q : PBC [..]
+qed
+
+prove e1_2_3s. P > Q, R > ~T, Q > R |- P > ~T
+    P > Q : pr
+    R > ~T : pr
+    Q > R : pr
+    assume
+        P : as
+        Q : >e 1 ..
+        R : >e 3 ..
+        ~T : >e 2 ..
+    end
+    P > ~T : >i [..]
+qed
+
+prove e1_2_3t. (P > Q) > R, S > ~P, T, ~S ^ T > Q |- R
+    (P > Q) > R : pr
+    S > ~P: pr
+    T : pr
+    ~S ^ T > Q : pr
+    assume
+        P : as
+        assume
+            S : as
+            ~P : >e 2 ..
+            # : ~e .. 5
+        end
+        ~S : ~i [..]
+        ~S ^ T : ^i .. 3
+        Q : >e 4 ..
+    end
+    P > Q : >i [..]
+    R : >e 1 ..
+qed
+
+prove e1_2_3u. (S > P) v (T > Q) |- (S > Q) v (T > P)
+    (S > P) v (T > Q) : pr
+    assume
+        S > P @i : as
+        P v ~P @LEM : LEM
+        assume
+            P : as
+            assume
+                T : as
+                P : copy ...
+            end
+            T > P : >i [..]
+            (S > Q) v (T > P) : vi2 ..
+        end
+        assume
+            ~P : as
+            ~S : MT @i ..
+            assume
+                S : as
+                # : ~e ... ..
+                Q : #e ..
+            end
+            S > Q : >i [..]
+            (S > Q) v (T > P) : vi1 ..
+        end
+        (S > Q) v (T > P) : ve @LEM [...] [..]
+    end
+    assume
+        T > Q @i : as
+        Q v ~Q @LEM : LEM
+        assume
+            Q : as
+            assume
+                S : as
+                Q : copy ...
+            end
+            S > Q : >i [..]
+            (S > Q) v (T > P) : vi1 ..
+        end
+        assume
+            ~Q : as
+            ~T : MT @i ..
+            assume
+                T : as
+                # : ~e ... ..
+                P : #e ..
+            end
+            T > P : >i [..]
+            (S > Q) v (T > P) : vi2 ..
+        end
+        (S > Q) v (T > P) : ve @LEM [...] [..]
+    end
+    (S > Q) v (T > P) : ve 1 [...] [..]
+qed
+
+prove e1_2_3v. (P ^ Q) > R, R > S, Q ^ ~S |- ~P
+    (P ^ Q) > R : pr
+    R > S : pr
+    Q ^ ~S : pr
+    assume
+        P : as
+        Q : ^e1 3
+        P ^ Q : ^i ... ..
+        R : >e 1 ..
+        S : >e 2 ..
+        ~S : ^e2 3
+        # : ~e .. ...
+    end
+    ~P : ~i [..]
+qed
