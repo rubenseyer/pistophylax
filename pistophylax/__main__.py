@@ -23,7 +23,7 @@ from .error import ContextualLogicError, LogicError
 def main():
     arguments = docopt(__doc__)
     verbose = arguments['--verbose']
-    logging.basicConfig(format='%(message)s', level=logging.DEBUG if verbose else logging.WARN)
+    logging.basicConfig(format='%(message)s', level=logging.DEBUG if verbose else logging.INFO)
     inputs = arguments['FILE']
 
     tic = time.perf_counter_ns()

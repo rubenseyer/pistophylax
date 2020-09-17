@@ -1,0 +1,102 @@
+// completeness result sequents
+
+prove e1_13_16a. P ∧ ¬Q ⊢ ¬(P → Q)
+    P ∧ ¬Q : pr
+    assume
+        P > Q : as
+        P : ^e1 1
+        Q : >e ... ..
+        ~Q : ^e2 1
+        # : ~e .. ...
+    end
+    ¬(P → Q) : ~i [..]
+qed
+prove e1_4_16b. ¬P ∧ ¬Q ⊢ P → Q
+    ¬P ∧ ¬Q : pr
+    assume
+        P : as
+        ~P : ^e1 1
+        # : ~e .. ...
+        Q : #e ..
+    end
+    P → Q : >i [..]
+qed
+prove e1_4_16c. ¬P ∧ Q ⊢ P → Q
+    ¬P ∧ Q : pr
+    assume
+        P : as
+        Q : ^e2 1
+    end
+    P → Q : >i [..]
+qed
+prove e1_4_16d. P ∧ Q ⊢ P → Q
+    P ∧ Q : pr
+    assume
+        P : as
+        Q : ^e2 1
+    end
+    P → Q : >i [..]
+qed
+prove e1_4_16e. ¬P ∧ Q ⊢ ¬(P ∧ Q)
+    ¬P ∧ Q : pr
+    assume
+        P ^ Q : as
+        P : ^e1 ..
+        ~P : ^e1 1
+        # : ~e .. ...
+    end
+    ¬(P ∧ Q) : ~i [..]
+qed
+prove e1_4_16f. ¬P ∧ ¬Q ⊢ ¬(P ∧ Q)
+    ¬P ∧ ¬Q : pr
+    assume
+        P ^ Q : as
+        P : ^e1 ..
+        ~P : ^e1 1
+        # : ~e .. ...
+    end
+    ¬(P ∧ Q) : ~i [..]
+qed
+prove e1_4_16g. P ∧ ¬Q ⊢ ¬(P ∧ Q)
+    P ∧ ¬Q : pr
+    assume
+        P ^ Q : as
+        Q : ^e2 ..
+        ~Q : ^e2 1
+        # : ~e .. ...
+    end
+    ¬(P ∧ Q) : ~i [..]
+qed
+prove e1_4_16h. ¬P ∧ ¬Q ⊢ ¬(P ∨ Q)
+    ¬P ∧ ¬Q : pr
+    assume
+        P v Q : as
+        assume
+            P : as
+            ~P : ^e1 1
+            # : ~e .. ...
+        end
+        assume
+            Q : as
+            ~Q : ^e2 1
+            # : ~e .. ...
+        end
+        # : ve 2 [...] [..]
+    end
+    ¬(P ∨ Q) : ~i [..]
+qed
+prove e1_4_16i. P ∧ Q ⊢ P ∨ Q
+     P ∧ Q : pr
+     P : ^e1 ..
+     P ∨ Q : vi1 ..
+qed
+prove e1_4_16j. ¬P ∧ Q ⊢ P ∨ Q
+     ¬P ∧ Q : pr
+     Q : ^e2 ..
+     P ∨ Q : vi2 ..
+qed
+prove e1_4_16k. P ∧ ¬Q ⊢ P ∨ Q
+     P ∧ ¬Q : pr
+     P : ^e1 ..
+     P ∨ Q : vi1 ..
+qed
