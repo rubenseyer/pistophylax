@@ -1,0 +1,3 @@
+include "tests/axioms.px"
+include "tests/axioms_predicate.px"
+include "tests/*"

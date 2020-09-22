@@ -1,6 +1,6 @@
 // completeness result sequents
 
-prove e1_13_16a. P ∧ ¬Q ⊢ ¬(P → Q)
+prove e1_4_16a. P ∧ ¬Q ⊢ ¬(P → Q)
     P ∧ ¬Q : pr
     assume
         P > Q : as

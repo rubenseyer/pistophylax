@@ -22,6 +22,9 @@ class UnknownRuleError(LogicError):
 class MismatchRuleError(LogicError):
     def __init__(self, comment: str):
         super().__init__(comment)
+class SubstitutionError(MismatchRuleError):
+    def __init__(self, comment):
+        super().__init__(comment)
 class ProofError(LogicError):
     def __init__(self, comment: str):
         super().__init__(comment)
@@ -38,6 +41,9 @@ class CircularIncludeError(LogicError):
 class NameCollisionError(LogicError):
     def __init__(self, name: str):
         super().__init__(f'name collision: {name}')
+class FreeBoundError(LogicError):
+    def __init__(self, var: str, formula: str, comment: str):
+        super().__init__(f'{str(var)} bound in {str(formula)} but needs to be free: {comment}')
 
 class ReferenceError(LogicError):
     pass

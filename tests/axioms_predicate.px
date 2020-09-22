@@ -1,0 +1,10 @@
+include "axioms.px"
+
+axiom =i. ⊢ t = t
+axiom =e. t1 = t2, P[t1/x] ⊢ P[t2/x]
+
+axiom ∀e.{t} ∀xP ⊢ P[t/x]
+axiom ∀i. [{x0} P[x0/x]] ⊢ ∀xP
+
+axiom ∃i.{t} P[t/x] ⊢ ∃xP
+axiom ∃e. ∃xP, [{x0} P[x0/x] Q] ⊢ Q

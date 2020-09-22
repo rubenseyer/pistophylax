@@ -1,0 +1,109 @@
+include "axioms_predicate.px"
+
+prove =sym. t1 = t2 |- t2 = t1
+    t1 = t2 : premise
+    // we have to protect the second term using *,
+    // otherwise it will be replaced
+    t1 = t1* : =i
+    t2 = t1 : =e 1 2
+qed
+
+prove =tra. t1 = t2, t2 = t3 |- t1 = t3
+    t1 = t2 : premise
+    t2 = t3 : premise
+    t1 = t3 : =e 2 1
+qed
+
+prove pt3. Ax(P(x) > Q(x)), AxP(x) |- AxQ(x)
+    Ax(P(x) > Q(x)) : pr
+    AxP(x) : pr
+    var x0
+        P(x0) > Q(x0) : Ae{x0} 1
+        P(x0) : Ae{x0} 2
+        Q(x0) : >e ... ..
+    end
+    AxQ(x) : Ai [..]
+qed
+
+prove pt4. P(t), Ax(P(x) > ~Q(x)) |- ~Q(t)
+    P(t) : pr
+    Ax(P(x) > ~Q(x)) : pr
+    P(t) > ~Q(t) : Ae{t} ..
+    ~Q(t) : >e .. 1
+qed
+
+prove pt5. AxP(x) |- ExP(x)
+    AxP(x) : pr
+    P(x) : Ae{x} ..
+    ExP(x) : Ei{x} ..
+qed
+
+prove pt6. Ax(P(x) > Q(x)), ExP(x) |- ExQ(x)
+    Ax(P(x) > Q(x)) : pr
+    ExP(x) : pr
+    assume x0
+        P(x0) : as
+        P(x0) > Q(x0) : Ae{x0} 1
+        Q(x0) : >e .. ...
+        ExQ(x) : Ei{x0} ..
+    end
+    ExQ(x) : Ee 2 [..]
+qed
+
+//prove pt6wrong. Ax(P(x) > Q(x)), ExP(x) |- ExQ(x)
+//    Ax(P(x) > Q(x)) : pr
+//    ExP(x) : pr
+//    assume x0
+//        P(x0) : as
+//        P(x0) > Q(x0) : Ae{x0} 1
+//        Q(x0) : >e .. ...
+//    end
+//    Q(x0) : Ee 2 [..]
+//    ExQ(x) : Ei{x0} ..
+//qed
+
+prove pt7. Ax(Q(x) > R(x)), Ex(P(x) ^ Q(x)) |- Ex(P(x) ^ R(x))
+    Ax(Q(x) > R(x)) : pr
+    Ex(P(x) ^ Q(x)) : pr
+    assume x0
+        P(x0) ^ Q(x0) : as
+        Q(x0) > R(x0) : Ae{x0} 1
+        Q(x0) : ^e2 ...
+        R(x0) : >e ... ..
+        P(x0) : ^e1 3
+        P(x0) ^ R(x0) : ^i .. ...
+        Ex(P(x) ^ R(x)) : Ei{x0} ..
+    end
+    Ex(P(x) ^ R(x)) : Ee 2 [..]
+qed
+
+prove pt8. ExP(x), AxAy(P(x) > Q(y)) |- AyQ(y)
+    ExP(x) : pr
+    AxAy(P(x) > Q(y)) : pr
+    var y0
+        assume x0
+            P(x0) @as : as
+            Ay(P(x0) > Q(y)) : Ae{x0} 2
+            P(x0) > Q(y0) : Ae{y0} ..
+            Q(y0) : >e .. @as
+        end
+        Q(y0) : Ee 1 [..]
+    end
+    AyQ(y) : Ai [..]
+qed
+
+//prove pt8wrong. ExP(x), Ax(P(x) > Q(x)) |- AyQ(y)
+//    ExP(x) : pr
+//    Ax(P(x) > Q(x)) : pr
+//    var x0
+//        assume x0
+//            P(x0) : as
+//            P(x0) > Q(x0) : Ae{x0} 2
+//            Q(x0) : >e .. ...
+//        end
+//        Q(x0) : Ee 1 [..]
+//    end
+//    AyQ(y) : Ai [..]
+//qed
+
+
