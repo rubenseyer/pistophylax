@@ -1,0 +1,40 @@
+// Adapted from https://carnap.io/about no 7
+// F(x,y) := "x is on y"
+// g(y,z) := "the bisector of the segment given by y and z"
+// h(x,z) := "the distance from x to z"
+// assuming a point is on the bisector of a segment iff it's equidistant from the endpoints of that segment
+// then, the bisectors of the sides of a triangle always meet at a point
+prove trbisectors. ∀x∀y∀z((F(x,g(y,z)) → h(x,y)=h(x,z)) ^ (h(x,y)=h(x,z) → F(x,g(y,z)))) ⊢ ∀w∀x∀y∀z((F(w,g(x,y)) ∧ F(w,g(x,z))) → F(w,g(y,z)))
+    ∀x∀y∀z((F(x,g(y,z)) → h(x,y)=h(x,z)) ^ (h(x,y)=h(x,z) → F(x,g(y,z)))) : pr
+    var a
+        var b
+            var c
+                var d
+                    assume
+                        (F(a,g(b,c)) ^ F(a,g(b,d))) : as
+                        F(a,g(b,c)) : ^e1 ..
+                        F(a,g(b,d)) : ^e2 ...
+                        ∀y∀z((F(a,g(y,z)) → h(a,y)=h(a,z)) ^ (h(a,y)=h(a,z) → F(a,g(y,z)))) : Ae{a} 1
+                        ∀z((F(a,g(b,z)) → h(a,b)=h(a,z)) ^ (h(a,b)=h(a,z) → F(a,g(b,z)))) : Ae{b} ..
+                        (F(a,g(b,c)) → h(a,b)=h(a,c)) ^ (h(a,b)=h(a,c) → F(a,g(b,c))) : Ae{c} ..
+                        (F(a,g(b,d)) → h(a,b)=h(a,d)) ^ (h(a,b)=h(a,d) → F(a,g(b,d))) : Ae{d} ...
+                        F(a,g(b,c)) → h(a,b)=h(a,c) : ^e1 ...
+                        F(a,g(b,d)) → h(a,b)=h(a,d) : ^e1 ...
+                        h(a,b)=h(a,c) : >e ... 3
+                        h(a,b)=h(a,d) : >e ... 4
+                        h(a,c)=h(a,d) @acad : =e ... ..
+                        ∀z((F(a,g(c,z)) → h(a,c)=h(a,z)) ^ (h(a,c)=h(a,z) → F(a,g(c,z)))) : Ae{c} 5
+                        (F(a,g(c,d)) → h(a,c)=h(a,d)) ^ (h(a,c)=h(a,d) → F(a,g(c,d))) : Ae{d} ..
+                        h(a,c)=h(a,d) → F(a,g(c,d)) : ^e2 ..
+                        F(a,g(c,d)) : >e .. @acad
+                    end
+                    F(a,g(b,c)) ^ F(a,g(b,d)) > F(a,g(c,d)) : >i [..]
+                end
+                ∀z((F(a,g(b,c)) ∧ F(a,g(b,z))) → F(a,g(c,z))) : Ai [..]
+            end
+            ∀y∀z((F(a,g(b,y)) ∧ F(a,g(b,z))) → F(a,g(y,z))) : Ai [..]
+        end
+        ∀x∀y∀z((F(a,g(x,y)) ∧ F(a,g(x,z))) → F(a,g(y,z))) : Ai [..]
+    end
+    ∀w∀x∀y∀z((F(w,g(x,y)) ∧ F(w,g(x,z))) → F(w,g(y,z))) : Ai [..]
+qed

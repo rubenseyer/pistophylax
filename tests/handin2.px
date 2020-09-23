@@ -1,0 +1,196 @@
+prove h3p2_a. AxAyR(x,y) |- EzR(z,z)
+    AxAyR(x,y) : pr
+    AyR(z0,y) : Ae{z0} ..
+    R(z0,z0) : Ae{z0} ..
+    EzR(z,z) : Ei{z0} ..
+qed
+
+prove h3p2_b. Ex(P(x) > F(x)), Ax(P(x) ^ Q(x)) |- AxP(x) ^ ExF(x)
+    Ex(P(x) > F(x)) : pr
+    Ax(P(x) ^ Q(x)) : pr
+    var x0
+        P(x0) ^ Q(x0) : Ae{x0} 2
+        P(x0) : ^e1 ..
+    end
+    AxP(x) @left : Ai [..]
+    assume x1
+        P(x1) > F(x1) : as
+        P(x1) : Ae{x1} @left
+        F(x1) : >e ... ..
+        ExF(x) : Ei{x1} ..
+    end
+    ExF(x) @right : Ee 1 [..]
+    AxP(x) ^ ExF(x) : ^i @left @right
+qed
+
+prove h3p2_c. Ex(P(x) > S) |- AxP(x) > S
+    Ex(P(x) > S) : pr
+    assume
+        AxP(x) : as
+        assume x0
+            P(x0) > S : as
+            P(x0) : Ae{x0} ...
+            S : >e ... ..
+        end
+        S : Ee 1 [..]
+    end
+    AxP(x) > S : >i [..]
+qed
+
+prove h3p2_d_prop. S > U v V |- (S > U) v (S > V)
+    S > U v V : pr
+    S v ~S : LEM
+    assume
+        S : as
+        U v V : >e 1 ..
+        assume
+            U : as
+            assume
+                S : as
+                U : copy ...
+            end
+            S > U : >i [..]
+            (S > U) v (S > V) : vi1 ..
+        end
+        assume
+            V : as
+            assume
+                S : as
+                V : copy ...
+            end
+            S > V : >i [..]
+            (S > U) v (S > V) : vi2 ..
+        end
+        (S > U) v (S > V) : ve 4 [...] [..]
+    end
+    assume
+        ~S : as
+        assume
+            S : as
+            # : ~e ... ..
+            U : #e ..
+        end
+        S > U : >i [..]
+        (S > U) v (S > V) : vi1 ..
+    end
+    (S > U) v (S > V) : ve 2 [...] [..]
+qed
+
+prove h3p2_d. S > ExP(x) |- Ex(S > P(x))
+    S > ExP(x) : pr
+    S v ~S : LEM
+    assume
+        S : as
+        ExP(x) : >e 1 ..
+        assume x0
+            P(x0) : as
+            assume
+                S : as
+                P(x0) : copy ...
+            end
+            S > P(x0) : >i [..]
+            Ex(S > P(x)) : Ei{x0} ..
+        end
+        Ex(S > P(x)) : Ee 4 [..]
+    end
+    assume
+        ~S : as
+        assume
+            S : as
+            # : ~e ... ..
+            P(x1) : #e ..
+        end
+        S > P(x1) : >i [..]
+        Ex(S > P(x)) : Ei{x1} ..
+    end
+    Ex(S > P(x)) : ve 2 [...] [..]
+qed
+
+prove h3p2_e. ExAy((R(y,x) > ~R(y,y)) ^ (~R(y,y) > R(y,x))) |- #
+    ExAy((R(y,x) > ~R(y,y)) ^ (~R(y,y) > R(y,x))) : pr
+    assume u0
+        Ay((R(y,u0) > ~R(y,y)) ^ (~R(y,y) > R(y,u0))) : as
+        (R(u0,u0) > ~R(u0,u0)) ^ (~R(u0,u0) > R(u0,u0)) : Ae{u0} ..
+        R(u0,u0) > ~R(u0,u0) @tf : ^e1 ..
+        ~R(u0,u0) > R(u0,u0) @ft : ^e2 ...
+        assume
+            R(u0,u0) : as
+            ~R(u0,u0) : >e @tf ..
+            # : ~e .. ...
+        end
+        ~R(u0,u0) : ~i [..]
+        R(u0,u0) : >e @ft ..
+        # : ~e ... ..
+    end
+    # : Ee 1 [..]
+qed
+
+prove h3p3_alt. |- Ex(D(x) > AyD(y))
+    AyD(y) v ~AyD(y) : LEM
+    assume
+        AyD(y) : as
+        assume
+            D(t) : as
+            AyD(y) : copy ...
+        end
+        D(t) > AyD(y) : >i [..]
+        Ex(D(x) > AyD(y)) : Ei{t} ..
+    end
+    assume
+        ~AyD(y) @an : as
+        assume
+            ~Ey~D(y) @en : as
+            var y0
+                assume
+                    ~D(y0) : as
+                    Ey~D(y) : Ei{y0} ..
+                    # : ~e @en ..
+                end
+                D(y0) : PBC [..]
+            end
+            AyD(y) : Ai [..]
+            # : ~e @an ..
+        end
+        Ey~D(y) @ep : PBC [..]
+        assume x0
+            ~D(x0) : as
+            assume
+                D(x0) : as
+                # : ~e ... ..
+                AyD(y) : #e ..
+            end
+            D(x0) > AyD(y) : >i [..]
+            Ex(D(x) > AyD(y)) : Ei{x0} ..
+        end
+        Ex(D(x) > AyD(y)) : Ee @ep [..]
+    end
+    Ex(D(x) > AyD(y)) : ve 1 [...] [..]
+qed
+
+prove h3p3. |- Ex(D(x) > AyD(y))
+    assume
+        ~Ex(D(x) > AyD(y)) : as
+        assume
+            D(t) : as
+            var u0
+                assume
+                    ~D(u0) : as
+                    assume
+                        D(u0) : as
+                        # : ~e ... ..
+                        AyD(y) : #e ..
+                    end
+                    D(u0) > AyD(y) : >i [..]
+                    Ex(D(x) > AyD(y)) : Ei{u0} ..
+                    # : ~e 1 ..
+                end
+                D(u0) : PBC [..]
+            end
+            AyD(y) : Ai [..]
+        end
+        D(t) > AyD(y) : >i [..]
+        Ex(D(x) > AyD(y)) : Ei{t} ..
+        # : ~e 1 ..
+    end
+    Ex(D(x) > AyD(y)) : PBC [..]
+qed

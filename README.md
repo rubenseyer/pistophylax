@@ -28,6 +28,8 @@ The best way to understand the syntax in detail is to look at the example axioms
 In addition, [a great number of test proofs](./tests) from Huth, M. and Ryan, M., 2004. _Logic in Computer Science_
 are available which demonstrates a freer style of the language (and the syntatic sugar shortcuts).
 
+[A cool, "real" example](./tests/ex_trbisectors.px) is the proof that the bisectors of the sides of a triangle meet at a point (given that a point is on a bisector iff it is equidistant from the endpoints of the corresponding side).
+
 Learn
 -----
 Every axiom and completed proof defines a rule in the system.
@@ -48,7 +50,7 @@ This rule says that given that we assuming P can prove Q, we may conclude that P
 Familiarize yourself with the rest of [the axioms](tests/axioms.px).
 
 We may now attempt our first proof.
-Let us prove, as an easy first target, that if P implies Q, and Q implies R, then necessarily P implies R.
+Let us prove, as an easy first target, that if P implies Q, and Q implies R, then clearly P implies R.
 This proof, of the transitivity of implication or the _hypothetical syllogism_, can be stated as
 ```
 proof →tra. P → Q, Q → R ⊢ P → R
@@ -73,7 +75,7 @@ For example, our first usage of `→e` refers to proof line 1, which is `P → Q
 We automatically infer the form of the conclusion from parse trees of the premises; in this case, P and Q are both propositional atoms, but from the perspective of `→e` they could just as well be arbitrary formulas.
 
 In this proof, we also have a subproof delimited by `assume` and `end`.
-The subproof allows us to introduce a single `assumption`, with the caveat that the subproof becomes a closure for the inner proof lines.
+The subproof allows us to introduce a single `assumption` (or `as` for short), with the caveat that the subproof becomes a closure for the inner proof lines.
 Thus we cannot refer to these lines from outside.
 However, we can refer to the subproof as a whole using square brackets: our application of `→i` refers to `[..]`, the last subproof completed.
 The subproof concludes, assuming `P`, that `R` holds, and so we may apply the rule and conclude `P → R`.
@@ -100,6 +102,6 @@ Contributions welcome!
 
 Future ideas:
  * LaTeX output of proofs (flag)
- * model evaluation (in particular first order logic)
+ * modal logic (would fit well with axiom sets)
  * ...
 

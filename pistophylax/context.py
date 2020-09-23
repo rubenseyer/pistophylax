@@ -131,7 +131,10 @@ class Context:
         return self.parent is None
 
     def addbox(self, lines, variable=None, tag=None, can_assume=True):
-        first, firstv = next(iter(lines.items()))
+        try:
+            first, firstv = next(iter(lines.items()))
+        except StopIteration:
+            raise error.LogicError(f'subproof must have at least one line (otherwise it may be omitted)')
         last, lastv = list(lines.items())[-1]
         i = self.cur - last + first - 1
         last_row_num, _ = self._lastitem()

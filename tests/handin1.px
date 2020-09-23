@@ -1,4 +1,4 @@
-prove p2_1. (P ^ Q) v (P ^ R) |- P ^ (Q v R)
+prove h1p2_1. (P ^ Q) v (P ^ R) |- P ^ (Q v R)
     (P ^ Q) v (P ^ R) : pr
     assume
         P ^ Q : as
@@ -17,7 +17,7 @@ prove p2_1. (P ^ Q) v (P ^ R) |- P ^ (Q v R)
     P ^ (Q v R) : ve 1 [...] [..]
 qed
 
-prove p2_2. P v Q |- (P > Q) > Q
+prove h1p2_2. P v Q |- (P > Q) > Q
     P v Q : pr
     assume
         P > Q : as
@@ -33,7 +33,7 @@ prove p2_2. P v Q |- (P > Q) > Q
     (P > Q) > Q : >i [..]
 qed
 
-prove p2_3. P > ~P, ~P > P |- #
+prove h1p2_3. P > ~P, ~P > P |- #
     P > ~P : pr
     ~P > P : pr
     assume
@@ -46,7 +46,7 @@ prove p2_3. P > ~P, ~P > P |- #
     # : ~e ... ..
 qed
 
-prove p2_4. ~(P ^ Q) |- ~P v ~Q
+prove h1p2_4. ~(P ^ Q) |- ~P v ~Q
     ~(P ^ Q) : pr
     P v ~P : LEM
     assume
@@ -66,7 +66,7 @@ prove p2_4. ~(P ^ Q) |- ~P v ~Q
     ~P v ~Q : ve 2 [...] [..]
 qed
 
-prove p3_1. |- ((P > Q) > P) > P
+prove h1p3_1. |- ((P > Q) > P) > P
     assume
         (P > Q) > P : as
         assume
@@ -85,7 +85,7 @@ prove p3_1. |- ((P > Q) > P) > P
     ((P > Q) > P) > P : >i [..]
 qed
 
-prove p3_2. (~P > P) > P |- ~~P > P
+prove h1p3_2. (~P > P) > P |- ~~P > P
     (~P > P) > P : pr
     assume
         ~~P : as
