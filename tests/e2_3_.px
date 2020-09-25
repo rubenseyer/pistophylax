@@ -398,3 +398,146 @@ prove e2_3_13c. ∀yQ(b,y), ∀x∀y(Q(x,y) → Q(s(x), s(y))) |- ∃z(Q(b,z) �
     Q(b,s(b)) ^ Q(s(b),s(s(b)*))  : ^i ... ..
     ∃z(Q(b,z) ∧ Q(z,s(s(b)))) : Ei{s(b)} ..
 qed
+
+prove e2_3_13d. ∀x∀y∀z(Sxy∧Syz → Sxz), ∀x¬Sxx ⊢ ∀x∀y(Sxy → ¬Syx)
+    ∀x∀y∀z(Sxy∧Syz → Sxz) : pr
+    ∀x¬Sxx : pr
+    var u
+        var w
+            assume
+                Suw : as
+                assume
+                    Swu : as
+                    ∀y∀z(Suy∧Syz → Suz) : Ae{u} 1
+                    ∀z(Suw∧Swz → Suz) : Ae{w} ..
+                    Suw∧Swu → Suu : Ae{u} ..
+                    Suw^Swu : ^i 3 4
+                    Suu : >e ... ..
+                    ~Suu : Ae{u} 2
+                    # : ~e .. ...
+                end
+                ~Swu : ~i [..]
+            end
+            Suw > ~Swu : >i [..]
+        end
+        Ay(Suy > ~Syu) : Ai [..]
+    end
+    AxAy(Sxy > ~Syx) : Ai [..]
+qed
+
+prove e2_3_13e. ∀x(Px∨Qx), ∃x¬Qx, ∀x(Rx→¬Px) ⊢ ∃x¬Rx
+    ∀x(Px∨Qx) : pr
+    ∃x¬Qx : pr
+    ∀x(Rx→¬Px) : pr
+    assume u
+        ~Qu : as
+        PuvQu : Ae{u} 1
+        assume
+            Pu : as
+        end
+        assume
+            Qu : as
+            # : ~e 4 ..
+            Pu : #e ..
+        end
+        Pu : ve 5 [...] [..]
+        ~~Pu : DNi ..
+        Ru>~Pu : Ae{u} 3
+        ~Ru : MT .. ...
+        Ex~Rx : Ei{u} ..
+    end
+    ∃x¬Rx : Ee 2 [..]
+qed
+
+prove e2_3_13f. ∀x(Px → Qx∨Rx), ¬∃x(Px∧Rx) ⊢ ∀x(Px → Qx)
+    ∀x(Px → Qx∨Rx) : pr
+    ¬∃x(Px∧Rx) : pr
+    var u
+        assume
+            Pu : as
+            Pu > QuvRu : Ae{u} 1
+            QuvRu : >e .. ...
+            assume
+                Qu : as
+            end
+            assume
+                Ru : as
+                Pu^Ru : ^i 3 ..
+                Ex(Px^Rx) : Ei{u} ..
+                # : ~e 2 ..
+                Qu : #e ..
+            end
+            Qu : ve 5 [...] [..]
+        end
+        Pu > Qu : >i [..]
+    end
+    Ax(Px > Qx) : Ai [..]
+qed
+
+prove e2_3_13g. ∃x∃y(Sxy∨Syx) ⊢ ∃x∃ySxy
+    ∃x∃y(Sxy∨Syx) : pr
+    assume u
+        ∃y(Suy∨Syu) : as
+        assume w
+            Suw v Swu : as
+            assume
+                Suw : as
+                EySuy : Ei{w} ..
+                ExEySxy : Ei{u} ..
+            end
+            assume
+                Swu : as
+                EySwy : Ei{u} ..
+                ExEySxy : Ei{w} ..
+            end
+            ExEySxy : ve 3 [...] [..]
+        end
+        ExEySxy : Ee 2 [..]
+    end
+    ExEySxy : Ee 1 [..]
+qed
+
+prove e2_3_13h. ∃x(Px ∧ Qx), ∀x(Px → Rx) ⊢ ∃x(Rx ∧ Qx)
+    ∃x(Px ∧ Qx) : pr
+    ∀x(Px → Rx) : pr
+    assume u
+        Pu ^ Qu : as
+        Pu > Ru : Ae{u} ...
+        Pu : ^e1 ...
+        Ru : >e ... ..
+        Qu : ^e2 3
+        Ru ^ Qu : ^i ... ..
+        Ex(Rx ^ Qx) : Ei{u} ..
+    end
+    Ex(Rx ^ Qx) : Ee 1 [..]
+qed
+
+prove e2_3_14. ExTx > Ax(Px > Tx), ExHx > Ax(Tx > Hx) |- Ex(Tx ^ Hx) > Ax(Px > Hx)
+    ExTx > Ax(Px > Tx) : pr
+    ExHx > Ax(Tx > Hx) : pr
+    assume
+        Ex(Tx ^ Hx) : as
+        assume u
+            Tu ^ Hu : as
+            Tu : ^e1 ..
+            ExTx : Ei{u} ..
+            Ax(Px > Tx) @APT : >e 1 ..
+            Hu : ^e2 4
+            ExHx : Ei{u} ..
+            Ax(Tx > Hx) @ATH : >e 2 ..
+            var w
+                Pw > Tw @PT : Ae{w} @APT
+                Tw > Hw @TH : Ae{w} @ATH
+                assume
+                    Pw : as
+                    Tw : >e @PT ..
+                    Hw : >e @TH ..
+                end
+                Pw > Hw : >i [..]
+            end
+            Ax(Px > Hx) : Ai [..]
+        end
+        Ax(Px > Hx) : Ee 3 [..]
+    end
+    Ex(Tx ^ Hx) > Ax(Px > Hx) : >i [..]
+qed
