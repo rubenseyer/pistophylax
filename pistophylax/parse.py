@@ -127,7 +127,7 @@ class Transformer(BaseTransformer):
         else:
             rv = self.__ref_helper(ref)
         if rv is None or not isinstance(rv, WFF):
-            raise error.ReferenceMissingError(f'proof line {ref} non-existent or out of scope')
+            raise error.ReferenceMissingError(f'proof line {ref} non-existent or out of scope (did you mean to refer to a block?)')
         return rv
     @v_args(meta=True)
     @_errorswithcontext
@@ -157,9 +157,9 @@ class Transformer(BaseTransformer):
     _falsum = lambda self, _: WFF(Falsum, None, None)
     _equals = lambda self, t: WFF(Equality(t[0], t[1]), None, None)
     atom = lambda self, s: WFF(Atom(s[0][0]), None, None)
-    predicate = lambda self, s: WFF(Predicate(Atom(s[0][0]), s[1:]), None, None)
+    predicate = lambda self, s: WFF(Predicate(Atom(s[0][0]), s[1:]), None, None) if len(s) > 1 else WFF(Predicate(Atom(s[0][0]), list(s[0][1:])), None, None)
     variable = lambda self, s: ''.join(s)
-    term = lambda self, s: Term(s[0][0], s[1:])
+    term = lambda self, s: Term(s[0][0], s[1:-1], s[-1] is not None)
     term_variable = lambda self, t: t[0] if t[1] is None else ProtectedVariable(t[0])
     substitution = lambda self, s: Substitution(Atom(s[0][0]), *s[1:])
 

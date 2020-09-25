@@ -179,7 +179,7 @@ class WFF:
             try:
                 node = atom_table[self.node.atom]
             except KeyError:
-                node = Predicate(Atom(self.node.atom + "'"), )
+                node = Predicate(Atom(self.node.atom + "'"), [term_table.get(t, t + "'") for t in self.node.terms])
         elif isinstance(self.node, Atom):
             try:
                 node = atom_table[self.node]
@@ -263,7 +263,7 @@ class Predicate:
     def _substitute(self, old, new, sub_vars):
         terms = self.terms.copy()
         for i, t in enumerate(terms):
-            if t == old and not isinstance(t, ProtectedVariable):
+            if t == old and not getattr(t, 'protected', False):
                 terms[i] = new
             elif isinstance(t, Term):
                 terms[i] = t.substitute(old, new, sub_vars)
@@ -291,23 +291,28 @@ class Equality(Predicate):
 
 @dataclass
 class Term:
-    __slots__ = ('name', 'args')
+    __slots__ = ('name', 'args', 'protected')
     name: str
     args: List['Term']
+    protected: bool
     def __str__(self):
         return f'{self.name}({",".join(str(s) for s in self.args)})'
     def __repr__(self):
         return f"'{str(self)}'"
     def __add__(self, other):
-        return Term(self.name + other, self.args)
+        return Term(self.name + other, self.args, self.protected)
+    def __eq__(self, other):
+        if not isinstance(other, Term):
+            return False
+        return self.name == other.name and self.args == other.args
     def substitute(self, old, new, sub_vars):
         args = self.args.copy()
         for i, t in enumerate(args):
-            if t == old and not isinstance(t, ProtectedVariable):
+            if t == old and not getattr(t, 'protected', False):
                 args[i] = new
             elif isinstance(t, Term):
                 args[i] = t.substitute(old, new, sub_vars)
-        return Term(self.name, args)
+        return Term(self.name, args, False)
     def has_var(self, var):
         return any(t == var or (isinstance(t, Term) and t.has_var(var)) for t in self.args)
     def walk_vars(self):
@@ -318,6 +323,7 @@ class Term:
                 yield t
 
 class ProtectedVariable(str):
+    protected = True
     pass
 
 class Atom(str):

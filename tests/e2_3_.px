@@ -1,0 +1,400 @@
+prove e2_3_1a. (y = c) ^ (y = x) |- c = x
+    (y = c) ^ (y = x) : pr
+    y = c : ^e1 ..
+    y = x : ^e2 ...
+    c = x : =e ... .. // t1:y t2:c f: {}=x
+qed
+
+prove e2_3_1b. t1 = t2 |- p(t,t2) = p(t,t1)
+    t1 = t2 : pr
+    p(t,t1) = p(t,t1*) : =i
+    p(t,t2) = p(t,t1) : =e ... .. // t1 t2 f: p(t,{}) = p(t,t1)
+qed
+
+prove e2_3_1c. (x = c) v G(p(x,x),c) |- y = p(x,x) > G(y,c) v y = p(c,x)
+    (x = c) v G(p(x,x),c) : pr
+    assume
+        x = c @l : as
+        assume
+            y = p(x,x*) : as
+            y = p(c,x) : =e ... ..
+            G(y,c) v y = p(c,x) : vi2 ..
+        end
+        y = p(x,x) > G(y,c) v y = p(c,x) : >i [..]
+    end
+    assume
+        G(p(x,x),c) @r : as
+        assume
+            y = p(x,x) : as
+            y = y* : =i
+            p(x,x) = y : =e ... ..
+            G(y,c) : =e .. @r
+            G(y,c) v y = p(c,x) : vi1 ..
+        end
+        y = p(x,x) > G(y,c) v y = p(c,x) : >i [..]
+    end
+    y = p(x,x) > G(y,c) v y = p(c,x) : ve 1 [...] [..]
+qed
+
+prove e2_3_4a. W > (P ^ Q) |- (W > P) ^ (W > Q)
+    W > (P ^ Q) : pr
+    assume
+        W : as
+        P ^ Q : >e 1 ..
+        P : ^e1 ..
+    end
+    W > P @l : >i [..]
+    assume
+        W : as
+        P ^ Q : >e 1 ..
+        Q : ^e2 ..
+    end
+    W > Q @r : >i [..]
+    (W > P) ^ (W > Q) : ^i @l @r
+qed
+
+prove e2_3_4b. W > AxQ(x) |- Ax(W > Q(x))
+    W > AxQ(x) : pr
+    var x0
+        assume
+            W : as
+            AxQ(x): >e 1 ..
+            Q(x0) : Ae{x0} ..
+        end
+        W > Q(x0) : >i [..]
+    end
+    Ax(W > Q(x)) : Ai [..]
+qed
+
+prove e2_3_4c. Ax(P(x) > Q(x)) |- AxP(x) > AxQ(x)
+    Ax(P(x) > Q(x)) : pr
+    assume
+        AxP(x) : as
+        var x0
+            P(x0) > Q(x0) : Ae{x0} ...
+            P(x0) : Ae{x0} ...
+            Q(x0) : >e ... ..
+        end
+        AxQ(x) : Ai [..]
+    end
+    AxP(x) > AxQ(x) : >i [..]
+qed
+
+prove e2_3_5. ~P v ~Q |- ~(P ^ Q)
+    ~P v ~Q : pr
+    assume
+        ~P @nP : as
+        assume
+            P ^ Q : as
+            P : ^e1 ..
+            # : ~e @nP ..
+        end
+        ~(P ^ Q) : ~i [..]
+    end
+    assume
+        ~Q @nQ : as
+        assume
+            P ^ Q : as
+            Q : ^e2 ..
+            # : ~e @nQ ..
+        end
+        ~(P ^ Q) : ~i [..]
+    end
+    ~(P ^ Q) : ve 1 [...] [..]
+qed
+prove e2_3_5z. Ex~W(x) |- ~AxW(x)
+    Ex~W(x) : pr
+    assume x0
+        ~W(x0) @n : as
+        assume
+            AxW(x) : as
+            W(x0) : Ae{x0} ..
+            # : ~e @n ..
+        end
+        ~AxW(x) : ~i [..]
+    end
+    ~AxW(x) : Ee 1 [..]
+qed
+
+prove e2_3_6a. AxPx |- AyPy
+    AxPx : pr
+    var y0
+        P(y0) : Ae{y0} ..
+    end
+    AyPy : Ai [..]
+qed
+
+prove e2_3_6b. Ax(Px > Qx) |- Ax~Qx > Ax~Px
+    Ax(Px > Qx) : pr
+    assume
+        Ax~Qx : as
+        var x0
+            P(x0) > Q(x0) : Ae{x0} 1
+            ~Q(x0) : Ae{x0} 2
+            ~P(x0) : MT ... ..
+        end
+        Ax~Px : Ai [..]
+    end
+    Ax~Qx > Ax~Px : >i [..]
+qed
+
+prove e2_3_6c. Ax(Px > ~Qx) |- ~Ex(Px ^ Qx)
+    Ax(Px > ~Qx) : pr
+    assume
+        Ex(Px ^ Qx) : as
+        assume x0
+            P(x0) ^ Q(x0) : as
+            Q(x0) @Q : ^e2 ..
+            P(x0) : ^e1 ...
+            P(x0) > ~Q(x0) : Ae{x0} 1
+            ~Q(x0) : >e .. ...
+            # : ~e .. @Q
+        end
+        # : Ee 2 [..]
+    end
+    ~Ex(Px ^ Qx) : ~i [..]
+qed
+
+prove e2_3_7a. AxAyPxy |- AuAwPuw
+    AxAyPxy : pr
+    var u0
+        var w0
+            AyP(u0,y) : Ae{u0} 1
+            P(u0,w0) : Ae{w0} ..
+        end
+        AwP(u0,w) : Ai [..]
+    end
+    AuAwPuw : Ai [..]
+qed
+
+prove e2_3_7b. ExEyFxy |- EuEwFuw
+    ExEyFxy : pr
+    assume u0
+        EyF(u0,y) : as
+        assume w0
+            F(u0,w0) : as
+            EwF(u0,w) : Ei{w0} ..
+        end
+        EwF(u0,w) : Ee 2 [..]
+        EuEwFuw : Ei{u0} ..
+    end
+    EuEwFuw : Ee 1 [..]
+qed
+
+prove e2_3_7c. ExAyPxy |- AyExPxy
+    ExAyPxy : pr
+    var y0
+        assume x0
+            AyP(x0,y) : as
+            P(x0,y0) : Ae{y0} ..
+            ExP(x,y0) : Ei{x0} ..
+        end
+        ExP(x,y0) : Ee 1 [..]
+    end
+    AyExPxy : Ai [..]
+qed
+
+// see snipped files
+
+prove e2_3_10a. PvQ |- ~(~P^~Q)
+    PvQ : pr
+    assume
+        ~P^~Q : as
+        assume
+            P : as
+            ~P : ^e1 2
+            # : ~e .. ...
+        end
+        assume
+            Q : as
+            ~Q : ^e2 2
+            # : ~e .. ...
+        end
+        # : ve 1 [...] [..]
+    end
+    ~(~P^~Q) : ~i [..]
+qed
+
+prove e2_3_10b. ExPx |- ~Ax~Px
+    ExPx : pr
+    assume
+        Ax~Px : as
+        assume u
+            Pu : as
+            ~Pu : Ae{u} ...
+            # : ~e .. ...
+        end
+        # : Ee 1 [..]
+    end
+    ~Ax~Px : ~i [..]
+qed
+
+prove e2_3_10c. ~(~P^~Q) |- PvQ
+    ~(~P^~Q) : pr
+    assume
+        ~(PvQ) : as
+        assume
+            P : as
+            PvQ : vi1 ..
+            # : ~e 2 ..
+        end
+        ~P : ~i [..]
+        assume
+            Q : as
+            PvQ : vi2 ..
+            # : ~e 2 ..
+        end
+        ~Q : ~i [..]
+        ~P^~Q : ^i 6 10
+        # : ~e 1 ..
+    end
+    PvQ : PBC [..]
+qed
+
+prove e2_3_10d. Ax~(~Px^~Qx) |- Ax(PxvQx)
+    Ax~(~Px^~Qx) : pr
+    var u
+        ~(~Pu^~Qu) : Ae{u} ..
+        PuvQu : e2_3_10c ..
+    end
+    Ax(PxvQx) : Ai [..]
+qed
+
+prove e2_3_11a. Pb |- Ax(x=b > Px)
+    Pb : pr
+    var u
+        assume
+            u=b : as
+            u=u* : =i
+            b=u : =e ... ..
+            Pu : =e .. 1
+        end
+        u=b > Pu : >i [..]
+    end
+    Ax(x=b > Px) : Ai [..]
+qed
+
+prove e2_3_11b. Pb, AxAy(Px ^ Py > x=y) |- Ax((Px > x=b) ^ (x=b > Px))
+    Pb : pr
+    AxAy(Px ^ Py > x=y) : pr
+    var u
+        Ay(Pu ^ Py > u=y) : Ae{u} ..
+        Pu ^ Pb > u=b : Ae{b} ..
+        assume
+            Pu : as
+            Pu ^ Pb : ^i .. 1
+            u=b : >e 4 ..
+        end
+        Pu > u=b @l : >i [..]
+        assume
+            u=b : as
+            u=u* : =i
+            b=u : =e ... ..
+            Pu : =e .. 1
+        end
+        u=b > Pu @r : >i [..]
+        (Pu > u=b) ^ (u=b > Pu) : ^i @l @r
+    end
+    Ax((Px > x=b) ^ (x=b > Px)) : Ai [..]
+qed
+
+prove e2_3_11c. ∃x∃y(H(x,y)∨H(y,x)), ¬∃xH(x,x) |- ∃x∃y¬(x=y)
+    ExEy(Hxy v Hyx) : pr
+    ~ExHxx : pr
+    assume a
+        Ey(Hay v Hya) : as
+        assume b
+            Hab v Hba : as
+            assume
+                a = b : as
+                Hbb v Hbb : =e .. ...
+                assume
+                    Hbb : as
+                end
+                Hbb : ve ... [..] [..]  // same both sides!
+                ExHxx : Ei{b} ..
+                # : ~e 2 ..
+            end
+            ~(a=b) : ~i [..]
+            Ey~(a=y) : Ei{b} ..
+            ExEy~(x=y) : Ei{a} ..
+        end
+        ExEy~(x=y) : Ee 3 [..]
+    end
+    ExEy~(x=y) : Ee 1 [..]
+qed
+
+prove e2_3_11d. ∀x((Px > x=b) ^ (x=b > Px)) |- Pb ∧ ∀x∀y(Px ∧ Py → x=y)
+    ∀x((Px > x=b) ^ (x=b > Px)) : pr
+    (Pb > b=b) ^ (b=b > Pb) : Ae{b} ..
+    b=b > Pb : ^e2 ..
+    b=b : =i
+    Pb @Pb : >e ... ..
+    var u
+        var w
+            assume
+                Pu ^ Pw : as
+                Pu @Pu : ^e1 ..
+                Pw @Pw : ^e2 ...
+                (Pu > u=b) ^ (u=b > Pu) : Ae{u} 1
+                Pu > u=b : ^e1 ..
+                u=b @ub : >e .. @Pu
+                (Pw > w=b) ^ (w=b > Pw) : Ae{w} 1
+                Pw > w=b : ^e1 ..
+                w=b : >e .. @Pw
+                w=w* : =i
+                b=w @bw : =e ... ..
+                u=w : =e @bw @ub
+            end
+            Pu ^ Pw > u=w : >i [..]
+        end
+        Ay(Pu ^ Py > u=y) : Ai [..]
+    end
+    AxAy(Px ^ Py > x=y) : Ai [..]
+    Pb ^ AxAy(Px ^ Py > x=y) : ^i @Pb ..
+qed
+
+prove e2_3_12. S → ∀xQx |- ∀x(S → Qx)
+    S > AxQx : pr
+    var u
+        assume
+            S : as
+            AxQx : >e ... ..
+            Qu : Ae{u} ..
+        end
+        S > Qu : >i [..]
+    end
+    Ax(S > Qx) : Ai [..]
+qed
+
+prove e2_3_13a. ∀xPaxx, ∀x∀y∀z(Pxyz → P(f(x),y,f(z))) |- P(f(a),a,f(a))
+    ∀xPaxx : pr
+    ∀x∀y∀z(Pxyz → P(f(x),y,f(z))) : pr
+    Paaa : Ae{a} ...
+    ∀y∀z(Payz → P(f(a),y,f(z))) : Ae{a} ...
+    ∀z(Paaz → P(f(a),a,f(z))) : Ae{a} ..
+    Paaa → P(f(a),a,f(a)) : Ae{a} ..
+    P(f(a),a,f(a)) : >e .. 3
+qed
+
+prove e2_3_13b. ∀xPaxx, ∀x∀y∀z(Pxyz → P(f(x),y,f(z))) |- ∃z P(f(a),z,f(f(a)))
+    ∀xPaxx : pr
+    ∀x∀y∀z(Pxyz → P(f(x),y,f(z))) : pr
+    P(a,f(a),f(a)) : Ae{f(a)} ...
+    ∀y∀z(Payz → P(f(a),y,f(z))) : Ae{a} ...
+    ∀z(P(a,f(a),z) → P(f(a),f(a),f(z))) : Ae{f(a)} ..
+    (P(a,f(a),f(a)) → P(f(a),f(a),f(f(a)))) : Ae{f(a)} ..
+    P(f(a)*,f(a),f(f(a)*)) : >e .. 3
+    EzP(f(a),z,f(f(a))) : Ei{f(a)} ..
+qed
+
+prove e2_3_13c. ∀yQ(b,y), ∀x∀y(Q(x,y) → Q(s(x), s(y))) |- ∃z(Q(b,z) ∧ Q(z,s(s(b))))
+    AyQby : pr
+    AxAy(Qxy > Q(s(x),s(y))) : pr
+    Ay(Qby > Q(s(b),s(y))) : Ae{b} ..
+    Q(b,s(b)) > Q(s(b),s(s(b))) : Ae{s(b)} ..
+    Q(b,s(b)) : Ae{s(b)} 1
+    Q(s(b),s(s(b))) : >e ... ..
+    Q(b,s(b)) ^ Q(s(b),s(s(b)*))  : ^i ... ..
+    ∃z(Q(b,z) ∧ Q(z,s(s(b)))) : Ei{s(b)} ..
+qed

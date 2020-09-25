@@ -42,9 +42,10 @@ _FORALL . 2: "∀"|"A"
 _EXISTS . 2: "∃"|"E"
 _EQUALS . 2: "="
 
-predicate: /[BCDF-Z]\(/ (term ("," term)*) ")" // avoid shift/reduce error from whitespace ignore
+predicate: /[BCDF-Z]\(/ (term ("," term)*) ")"  // avoid shift/reduce error from whitespace ignore
+         | /[BCDF-Z][a-uw-z]+/  // cool forallx short notation
          | UR_UCASE_LETTER -> atom
-term: /[a-uw-z]\(/ (term ("," term)*) ")" // avoid shift/reduce error from whitespace ignore
+term: /[a-uw-z]\(/ (term ("," term)*) ")" [protect] // avoid shift/reduce error from whitespace ignore
     | variable [protect] -> term_variable
 variable: UR_LCASE_LETTER INT?
 protect: "*"

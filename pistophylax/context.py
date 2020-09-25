@@ -46,6 +46,7 @@ class Session:
         return rv
 
     def eval(self, txt, name='-'):
+        logging.debug('evaluating ' + name)
         oldfile, self.file = self.file, name
         oldcontents, self.contents = self.contents, txt
         p = self.parser.parse(txt)
@@ -55,6 +56,8 @@ class Session:
 
     def register(self, sq: Sequent):
         logging.debug(f'✓ {sq.name}: {str(sq)}')
+        if sq.name in self.table:
+            logging.warning(f'warning: {sq.name} as {str(sq)} overwrites {str(self.table[sq.name])}')
         self.table[sq.name] = sq
 
     def apply(self, name: str, premises: List[Union[WFF, Box]], conclusion: WFF, slots: List[Union[str, 'Term']] = None) -> WFF:
