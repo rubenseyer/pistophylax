@@ -195,7 +195,7 @@ prove h3p3. |- Ex(D(x) > AyD(y))
     Ex(D(x) > AyD(y)) : PBC [..]
 qed
 
-prove h4p1. AxAy(x=g(y) > f(x)=y) |- Axfign (g(x)) = x
+prove h4p1. AxAy(x=g(y) > f(x)=y) |- Ax(f(g(x)) = x)
     AxAy(x=g(y) > f(x)=y) : pr
     var u
         Ay(g(u)=g(y) > f(g(u))=y) : Ae{g(u)} ..

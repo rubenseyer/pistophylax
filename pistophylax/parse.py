@@ -70,6 +70,7 @@ class Transformer(BaseTransformer):
     @_errorswithcontext
     def deduction(self, args, meta):
         f, tag, (rule, slots, premises) = args
+        premises = [p[0] for p in premises] if premises is not None else None
         is_premise, is_assumption = False, False
         if rule == 'premise':
             is_premise = True
@@ -121,29 +122,29 @@ class Transformer(BaseTransformer):
     def ref(self, args, meta):
         ref = args[0]
         if ref is Last:
-            rv = self.session.ctx().lastline()
+            rv, i = self.session.ctx().lastline()
         elif ref is LastLast:
-            rv = self.session.ctx().lastline(2)
+            rv, i = self.session.ctx().lastline(2)
         else:
-            rv = self.__ref_helper(ref)
+            rv, i = self.__ref_helper(ref)
         if rv is None or not isinstance(rv, WFF):
             raise error.ReferenceMissingError(f'proof line {ref} non-existent or out of scope (did you mean to refer to a block?)')
-        return rv
+        return rv, i
     @v_args(meta=True)
     @_errorswithcontext
     def blockref(self, args, meta):
         ref = args[0]
         if ref is Last:
-            rv = self.session.ctx().lastbox()
+            rv, i = self.session.ctx().lastbox()
         elif ref is LastLast:
-            rv = self.session.ctx().lastbox(2)
+            rv, i = self.session.ctx().lastbox(2)
         else:
-            rv = self.__ref_helper(ref)
+            rv, i = self.__ref_helper(ref)
         if rv is None:
             raise error.ReferenceMissingError(f'no subproof at proof line {ref}')
         if not isinstance(rv, Box):
             raise error.ReferenceMissingError('[..] but last line not end of subproof')
-        return rv
+        return rv, i
     tag = lambda self, t: Tag(t[0])
     last = lambda self, t: Last
     lastlast = lambda self, t: LastLast

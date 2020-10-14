@@ -88,15 +88,17 @@ class Context:
 
         self._premisecount = 0
         self.can_assume = can_assume
+        self._boxsizes: Dict[int, int] = {}
 
     def getline(self, i):
         i = int(i)
         if i in self._lines:
-            return self._lines[i]
+            rv = self._lines[i]
+            return rv, i if not isinstance(rv, Box) else (i, i + self._boxsizes[i])
         elif self.parent is not None:
             return self.parent.getline(i)
         else:
-            return None
+            return None, None
     def nextline(self, wff, tag=None, premise=False, assumption=False):
         if tag is not None:
             self._addtag(tag, self.cur)
@@ -149,6 +151,7 @@ class Context:
             raise error.LogicError(f'alleged fresh variable {variable} already in use')
         box = Box(firstv if can_assume else None, lastv, variable)
         self._lines[i] = box
+        self._boxsizes[i] = last - first
         if variable is not None:
             self._unfreshvars.add(variable)
             self._bannedvars.add(variable)
@@ -156,7 +159,8 @@ class Context:
             self._addtag(tag, i)
         return box
     def lastbox(self, levels=1):
-        return self._lastitem(levels, recurse=False)[1]
+        li = self._lastitem(levels, recurse=False)
+        return li[1], (li[0], li[0]+self._boxsizes[li[0]])
 
     def gettag(self, name):
         if name in self._tags:

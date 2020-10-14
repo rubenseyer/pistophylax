@@ -1,13 +1,14 @@
 """Pistophylax Natural deduction assistant
 
 Usage:
-  pistophylax [-v | --verbose] [--] [FILE | -]...
+  pistophylax [-v | --verbose] [-L | --latex] [--] [FILE | -]...
   pistophylax (-h | --help)
 
 With no FILE, or when FILE is -, read standard input.
 
 Options:
-  -v --verbose  verbose output (report successes)
+  -v --verbose  verbose output (report successes, or TeX all imports)
+  -L --latex    LaTeX output using logicproof.sty
   -h --help     show this
 
 """
@@ -19,10 +20,12 @@ from docopt import docopt
 from lark.exceptions import VisitError
 from .context import Session
 from .error import ContextualLogicError, LogicError
+from .latex import latex as dolatex
 
 def main():
     arguments = docopt(__doc__)
     verbose = arguments['--verbose']
+    latex = arguments['--latex']
     logging.basicConfig(format='%(message)s', level=logging.DEBUG if verbose else logging.INFO)
     inputs = arguments['FILE']
 
@@ -32,9 +35,11 @@ def main():
     try:
         for path in inputs:
             if path == '-':
-                s.eval(sys.stdin.read(), name='stdin')
+                rv = s.eval(sys.stdin.read(), name='stdin')
             else:
-                s.load(path)
+                rv = s.load(path)
+            if latex:
+                dolatex(rv, sys.stdout, verbose)
     except VisitError as e:
         success = False
         if isinstance(e.orig_exc, (ContextualLogicError, LogicError)):

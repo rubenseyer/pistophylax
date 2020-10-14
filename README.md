@@ -101,7 +101,7 @@ This project is licensed under the [GPLv3](./LICENSE).
 Contributions welcome!
 
 Future ideas:
- * LaTeX output of proofs (flag)
- * modal logic (would fit well with axiom sets)
+ * semantics assistance?
+ * modal logic (would fit well with axiom sets, but natural deduction sucks)
  * ...
 
