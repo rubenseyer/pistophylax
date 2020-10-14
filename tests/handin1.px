@@ -99,3 +99,14 @@ prove h1p3_2. (~P > P) > P |- ~~P > P
     end
     ~~P > P : >i [..]
 qed
+
+prove h4p1. ∀x∀y(x=g(y) → f(x)=y) |- ∀xf(g(x))=x
+    ∀x∀y(x=g(y) → f(x)=y) : pr
+    var x0
+        ∀y(g(x0)=g(y) → f(g(x0))=y) : ∀e{g(x0)} ..
+        (g(x0)=g(x0) → f(g(x0))=x0) : ∀e{x0} ..
+        g(x0) = g(x0) : =i
+        f(g(x0)) = x0 : >e ... ..
+    end
+    ∀xf(g(x))=x : ∀i [..]
+qed

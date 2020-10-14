@@ -1,0 +1,142 @@
+prove e2_4_12b. |- Ey(AxPx > Py)
+    assume
+        AxPx : as
+        Pt : Ae{t} ..
+    end
+    AxPx > Pt : >i [..]
+    Ey(AxPx > Py) : Ei{t} ..
+qed
+
+prove e2_4_12c. |- ∀x(Px → ∃yQy) → ∀x∃y(Px → Qy)
+    assume
+        ∀x(Px → ∃yQy) : as
+        var u
+            Pu → ∃yQy : ∀e{u} ..
+            assume
+                ~∃y(Pu → Qy) : as
+                assume
+                    Pu : as
+                    ∃yQy : >e 2 ..
+                    assume w
+                        Qw : as
+                        assume
+                            Pu : as
+                            Qw : copy ...
+                        end
+                        Pu > Qw : >i [..]
+                        ∃y(Pu → Qy) : ∃i{w} ..
+                        # : ~e 3 ..
+                    end
+                    # : ∃e 5 [..]
+                end
+                ~Pu : ~i [..]
+                assume
+                    Pu : as
+                    # : ~e ... ..
+                    Qt : #e ..
+                end
+                Pu > Qt : >i [..]
+                ∃y(Pu → Qy) : ∃i{t} ..
+                # : ~e 3 ..
+            end
+            ∃y(Pu → Qy) : PBC [..]
+        end
+        ∀x∃y(Px → Qy) : ∀i [..]
+    end
+    ∀x(Px → ∃yQy) → ∀x∃y(Px → Qy) : >i [..]
+qed
+
+prove e2_4_12d. |- ∀x∃y(Px → Qy) → ∀x(Px → ∃yQy)
+    assume
+        ∀x∃y(Px → Qy) : as
+        var u
+            ∃y(Pu → Qy) : Ae{u} ..
+            assume w
+                Pu > Qw : as
+                assume
+                    Pu : as
+                    Qw : >e ... ..
+                    EyQy : Ei{w} ..
+                end
+                Pu → ∃yQy : >i [..]
+            end
+            Pu → ∃yQy : Ee 2 [..]
+        end
+        ∀x(Px → ∃yQy) : Ai [..]
+    end
+    ∀x∃y(Px → Qy) → ∀x(Px → ∃yQy) : >i [..]
+qed
+
+prove e2_4_12i. |- Ax((Px > Qx) ^ (Qx > Px)) > (AxPx > AxQx)
+    assume
+        Ax((Px > Qx) ^ (Qx > Px)) : as
+        assume
+            AxPx : as
+            var u
+                (Pu > Qu) ^ (Qu > Pu) : Ae{u} ...
+                Pu : Ae{u} ...
+                Pu > Qu : ^e1 ...
+                Qu : >e .. ...
+            end
+            AxQx : Ai [..]
+        end
+        AxPx > AxQx : >i [..]
+    end
+    Ax((Px > Qx) ^ (Qx > Px)) > (AxPx > AxQx) : >i [..]
+qed
+
+prove e2_4_12k. |- AxEy(Px > Qy) > EyAx(Px > Qy)
+    assume
+        AxEy(Px > Qy) : as
+        var b
+            assume
+                Pb @Pb : as
+                Ey(Pb > Qy) @e : Ae{b} ...
+                assume a
+                    Pb > Qa : as
+                    Qa : >e .. @Pb
+                    EyQy : Ei{a} ..
+                end
+                EyQy : Ee @e [..]
+            end
+            Pb > EyQy : >i [..]
+        end
+        Ax(Px > EyQy) : Ai [..]
+        assume
+            ~EyAx(Px > Qy) @n : as
+            var u
+                Pu > EyQy : Ae{u} ...
+                assume
+                    Pu : as
+                    EyQy @EQ : >e ... ..
+                    assume w
+                        Qw : as
+                        var z
+                            assume
+                                Pz : as
+                                Qw : copy ...
+                            end
+                            Pz > Qw : >i [..]
+                        end
+                        Ax(Px > Qw) : Ai [..]
+                        EyAx(Px > Qy) : Ei{w} ..
+                        # : ~e @n ..
+                    end
+                    # : Ee @EQ [..]
+                end
+                ~Pu : ~i [..]
+                assume
+                    Pu : as
+                    # : ~e ... ..
+                    Qt : #e ..
+                end
+                Pu > Qt : >i [..]
+            end
+            Ax(Px > Qt) : Ai [..]
+            EyAx(Px > Qy) : Ei{t} ..
+            # : ~e @n ..
+        end
+        EyAx(Px > Qy) : PBC [..]
+    end
+    AxEy(Px > Qy) > EyAx(Px > Qy) : >i [..]
+qed

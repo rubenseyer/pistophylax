@@ -194,3 +194,54 @@ prove h3p3. |- Ex(D(x) > AyD(y))
     end
     Ex(D(x) > AyD(y)) : PBC [..]
 qed
+
+prove h4p1. AxAy(x=g(y) > f(x)=y) |- Axfign (g(x)) = x
+    AxAy(x=g(y) > f(x)=y) : pr
+    var u
+        Ay(g(u)=g(y) > f(g(u))=y) : Ae{g(u)} ..
+        g(u)=g(u) > f(g(u))=u : Ae{u} ..
+        g(u)=g(u) : =i
+        f(g(u))=u : >e ... ..
+    end
+    Axf(g(x)) = x : Ai [..]
+qed
+
+prove h4p5_a. |- Ex(Q(x) v ~Q(h(x)))
+    assume
+        ~Ex(Q(x) v ~Q(h(x))) : as
+        assume
+            Q(h(t)) : as
+            Q(h(t)) v ~Q(h(h(t))) : vi1 ..
+            Ex(Q(x) v ~Q(h(x))) : Ei{h(t)} ..
+            # : ~e 1 ..
+        end
+        ~Q(h(t)) : ~i [..]
+        Q(t) v ~Q(h(t)) : vi2 ..
+        Ex(Q(x) v ~Q(h(x))) : Ei{t} ..
+        # : ~e 1 ..
+    end
+    Ex(Q(x) v ~Q(h(x))) : PBC [..]
+qed
+
+prove h4p5_b. Ax(Qx > x=c) |- AxAy(Qx ^ Qy > x=y)
+    Ax(Qx > x=c) : pr
+    var u
+        var w
+            Qu > u=c : Ae{u} 1
+            Qw > w=c : Ae{w} 1
+            assume
+                Qu ^ Qw : as
+                Qu : ^e1 ..
+                Qw : ^e2 ...
+                u=c @uc : >e 2 ...
+                w=c : >e 3 ...
+                w=w* : =i
+                c=w : =e ... ..
+                u=w : =e .. @uc
+            end
+            Qu ^ Qw > u=w : >i [..]
+        end
+        Ay(Qu ^ Qy > u=y) : Ai [..]
+    end
+    AxAy(Qx ^ Qy > x=y) : Ai [..]
+qed
